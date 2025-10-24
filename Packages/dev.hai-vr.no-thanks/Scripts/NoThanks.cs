@@ -1,10 +1,15 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using VRC.Core;
+using VRC.SDK3A.Editor;
+using VRC.SDKBase;
 using VRC.SDKBase.Editor.Api;
+using VRC.SDKBase.Editor.BuildPipeline;
 using Tools = VRC.Tools;
 
 public class NoThanks
@@ -45,6 +50,54 @@ public class NoThanks
         pipelineManager.blueprintId = result.ID;
     }
 
+    internal static async Task<VRCAvatar> BoganAvatarRecord(VRCAvatar data, CancellationToken cancellationToken = default)
+    {
+        var newAvatarData = new Dictionary<string, object>
+        {
+            {"name", data.Name},
+            {"description", data.Description},
+            {"tags", data.Tags},
+            {"releaseStatus", data.ReleaseStatus},
+            {"platform", Tools.Platform},
+            {"unityVersion", Tools.UnityVersion.ToString()},
+            {"assetVersion", 1}
+        };
+        return await VRCApi.Post<Dictionary<string, object>, VRCAvatar>("avatars", newAvatarData, cancellationToken: cancellationToken);
+    }
+}
+
+public class NoThanksCallback : IVRCSDKBuildRequestedCallback
+{
+    public int callbackOrder { get; }
+    public bool OnBuildRequested(VRCSDKRequestedBuildType requestedBuildType)
+    {
+        var selectedAvatarField = typeof(VRCSdkControlPanelAvatarBuilder).GetField("_selectedAvatar", BindingFlags.Static | BindingFlags.NonPublic);
+        if (selectedAvatarField == null) return true;
+        
+        var value = (VRC_AvatarDescriptor)selectedAvatarField.GetValue(null);
+        if (value == null) return true;
+
+        var pipelineManager = value.GetComponent<PipelineManager>();
+        if (pipelineManager == null) return true;
+
+        if (string.IsNullOrWhiteSpace(pipelineManager.blueprintId))
+        {
+            var task = BoganAvatarRecord(new VRCAvatar
+            {
+                Name = "temp",
+                Description = "temp",
+                Tags = new List<string>(),
+                ReleaseStatus = "private"
+            }).ConfigureAwait(false);
+
+            var result = task.GetAwaiter().GetResult();
+        
+            pipelineManager.blueprintId = result.ID;
+        }
+
+        return true;
+    }
+
     private static async Task<VRCAvatar> BoganAvatarRecord(VRCAvatar data, CancellationToken cancellationToken = default)
     {
         var newAvatarData = new Dictionary<string, object>
@@ -60,3 +113,4 @@ public class NoThanks
         return await VRCApi.Post<Dictionary<string, object>, VRCAvatar>("avatars", newAvatarData, cancellationToken: cancellationToken);
     }
 }
+#endif

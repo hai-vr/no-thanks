@@ -2,7 +2,8 @@
     "name": "NoThanks",
     "rootNamespace": "",
     "references": [
-        "VRC.SDKBase.Editor"
+        "VRC.SDKBase.Editor",
+        "VRC.SDK3A.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
