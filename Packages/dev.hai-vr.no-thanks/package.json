@@ -1,0 +1,16 @@
+{
+  "name": "dev.hai-vr.no-thanks",
+  "displayName": "Haï ~ Generate new Avatar blueprint IDs in older SDKs",
+  "version": "1.0.0",
+  "unity": "2019.4",
+  "description": "Generate new Avatar blueprint IDs in older SDKs. Tools/No Thanks - Assign New Avatar ID.",
+  "author" : {
+    "name" : "Haï~"
+  },
+  "vpmDependencies": {
+  },
+  "url" : "https://docs.hai-vr.dev/docs/products/no-thanks",
+  "documentationUrl": "https://docs.hai-vr.dev/docs/products/no-thanks",
+  "changelogUrl": "https://docs.hai-vr.dev/docs/changelogs/no-thanks",
+  "license": "N/A"
+}

@@ -1,0 +1,16 @@
+{
+    "name": "NoThanks",
+    "rootNamespace": "",
+    "references": [
+        "VRC.SDKBase.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
