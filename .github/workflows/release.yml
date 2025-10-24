@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  packageName: "dev.hai-vr.changeme"
+  packageName: "dev.hai-vr.no-thanks"
 
 permissions:
   contents: write
